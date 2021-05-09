@@ -73,3 +73,7 @@ if __name__ == '__main__':
 	    epochs=training_epochs,
 	    batch_size=batch_size,
 	    validation_data=(x_val, y_val))
+
+	# 4. 평가 예측
+	evaluation = model.evaluate(x_test, y_test, batch_size=batch_size)
+	print('MSE: {}'.format(evaluation[1]))

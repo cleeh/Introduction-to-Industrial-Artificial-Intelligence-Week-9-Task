@@ -38,3 +38,38 @@ if __name__ == '__main__':
 	with open('features.data', 'wb') as file:
 	    pickle.dump(np.array([feature.as_list() for feature in features]), file)
 	    pickle.dump(np.array(cycles), file)
+
+	import tensorflow as tf
+	from keras.models import Sequential
+	from keras.layers import Dense, Dropout
+	from keras.optimizers import adam
+
+	x_train, y_train = np.array([feature.as_list() for feature in features[:30000]]), np.array(cycles[:30000])
+	x_test, y_test = np.array([feature.as_list() for feature in features[30000:40000]]), np.array(cycles[30000:40000])
+	x_val, y_val = np.array([feature.as_list() for feature in features[40000:]]), np.array(cycles[40000:])
+
+	training_epochs = 15
+	batch_size = 1
+
+	# 2. 모델 구성
+	model = Sequential([
+	    Dense(8, activation='relu'),
+	    Dropout(0.3),
+	    Dense(1000, activation='sigmoid'),
+	    Dropout(0.3),
+	    Dense(1000, activation='relu'),
+	    Dropout(0.3),
+	    Dense(1, activation='relu'),
+	])
+	model.compile(
+	    loss='mse',
+	    optimizer='adam',
+	    metrics=[tf.keras.metrics.MeanSquaredError()])
+
+	# 3. 훈련
+	model.fit(
+	    x_train,
+	    y_train,
+	    epochs=training_epochs,
+	    batch_size=batch_size,
+	    validation_data=(x_val, y_val))

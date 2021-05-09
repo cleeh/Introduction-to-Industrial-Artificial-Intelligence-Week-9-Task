@@ -77,3 +77,11 @@ if __name__ == '__main__':
 	# 4. 평가 예측
 	evaluation = model.evaluate(x_test, y_test, batch_size=batch_size)
 	print('MSE: {}'.format(evaluation[1]))
+
+	# 5. 시각화
+	import matplotlib.pyplot as plt
+	plt.ylim(0, 200)
+	plt.plot(y_test[250:400])
+	plt.plot(y_predict[250:400])
+	plt.show()
+	
